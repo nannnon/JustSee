@@ -48,31 +48,36 @@ public class ContinuingRectsController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void Move(float vel)
     {
-        // 先頭の矩形を前進
         Vector3 pos = this.transform.position;
 
         switch (this.m_dir)
         {
             case 0:
-                pos.y += this.m_vel;
+                pos.y += vel;
                 break;
             case 1:
-                pos.x += this.m_vel;
+                pos.x += vel;
                 break;
             case 2:
-                pos.y -= this.m_vel;
+                pos.y -= vel;
                 break;
             case 3:
-                pos.x -= this.m_vel;
+                pos.x -= vel;
                 break;
             default:
                 throw new System.Exception();
         }
 
         this.transform.position = pos;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // 先頭の矩形を前進
+        this.Move(this.m_vel);
 
         // 後続も前進
         for (int i = kFRN - 1; i > 0; --i)
@@ -82,24 +87,20 @@ public class ContinuingRectsController : MonoBehaviour
         this.m_frs[0].transform.position = this.transform.position;
     }
 
-    void OnTriggerEnter(Collider t)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("called");
+        // 後続と当たっている時は何もしない
+        foreach (GameObject go in this.m_frs)
+        {
+            if (go == other.gameObject)
+            {
+                return;
+            }
+        }
+
+        // 後退して方向転換
+        this.Move(-this.m_vel);
         this.m_dir = (this.m_dir + 1) % 4;
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Hit"); // ログを表示する
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        Debug.Log("called");
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        Debug.Log("called");
+        this.Move(this.m_vel);
     }
 }

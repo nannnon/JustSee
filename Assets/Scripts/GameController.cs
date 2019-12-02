@@ -10,19 +10,13 @@ public class GameController : MonoBehaviour
     void Start()
     {
         // 連なる矩形を生成
-        GameObject crs = Resources.Load< GameObject>("Prefabs/ContinuingRects");
+        GameObject crs = Resources.Load<GameObject>("Prefabs/ContinuingRects");
         GameObject parent = GameObject.Find("Rects");
-
+        
         for (int i = 0; i < kCRSNum; ++i)
         {
             GameObject go = Instantiate(crs);
             go.transform.SetParent(parent.transform);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
