@@ -101,6 +101,6 @@ public class ContinuingRectsController : MonoBehaviour
         // 後退して方向転換
         this.Move(-this.m_vel);
         this.m_dir = (this.m_dir + 1) % 4;
-        this.Move(this.m_vel);
+        //this.Move(this.m_vel);
     }
 }
